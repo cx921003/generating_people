@@ -14,7 +14,7 @@ fi
 mkdir ../data/people/${out_suff}
 
 for dset_part in train val test; do
-    ~/git/clustertools/clustertools/scripts/tfrpack.py \
+    ~/workspace/clustertools/clustertools/scripts/tfrpack.py \
         ../data/pose/extracted/${dset_part} \
         --out_fp ../data/people/${out_suff}/${dset_part}
 done

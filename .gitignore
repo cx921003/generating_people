@@ -4,3 +4,6 @@ generation/experiments/states
 .#*
 .*_cache
 generation/experiments/features
+.idea/
+gp_tools.egg-info/
+
