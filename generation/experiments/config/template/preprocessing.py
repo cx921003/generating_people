@@ -93,7 +93,7 @@ def prepare(load_dict, mode, config):
                 conditioning = transform(conditioning, mode, config)
                 conditioning.set_shape((config["crop_size"],
                                         config["crop_size"], 3))
-    else:
+    elif config["model_version"] in ['portray']:
         if config["input_as_class"]:
             inputs = load_dict['labels']
             inputs.set_shape((config["scale_size"], config["scale_size"], 3))
@@ -121,6 +121,36 @@ def prepare(load_dict, mode, config):
             conditioning = transform(conditioning, mode, config)
             conditioning.set_shape((config["crop_size"],
                                     config["crop_size"], 3))
+
+    elif config["model_version"] in ['portray_body']:
+        if config["input_as_class"]:
+            inputs = load_dict['bodysegments']
+            inputs.set_shape((config["scale_size"], config["scale_size"], 3))
+            inputs = inputs[:, :, 0]
+            inputs = tf.cast(one_hot(inputs, 22), tf.float32) - 0.5
+            inputs = transform(inputs, mode, config, True)
+            inputs.set_shape((config["crop_size"], config["crop_size"], 22))
+        else:
+            inputs = load_dict['bodysegments_vis']
+            inputs.set_shape((config["scale_size"], config["scale_size"], 3))
+            inputs = tf.cast(inputs, tf.float32) * 2. / 255. - 1.
+            inputs = transform(inputs, mode, config)
+            inputs.set_shape((config["crop_size"], config["crop_size"], 3))
+        labels = load_dict['image']
+        labels.set_shape((config["scale_size"], config["scale_size"], 3))
+        labels = tf.cast(labels, tf.float32) * 2. / 255. - 1.
+        labels = transform(labels, mode, config)
+        labels.set_shape((config["crop_size"], config["crop_size"], 3))
+        if config.get("portray_additional_conditioning", False):
+            conditioning = load_dict["segcolors"]
+            conditioning.set_shape((config["scale_size"],
+                                    config["scale_size"], 3))
+            conditioning = (tf.cast(conditioning, tf.float32) *
+                            2. / 255. - 1.)
+            conditioning = transform(conditioning, mode, config)
+            conditioning.set_shape((config["crop_size"],
+                                    config["crop_size"], 3))
+
     inputs = tf.cast(inputs, tf.float32)
     labels = tf.cast(labels, tf.float32)
     if conditioning is not None:
