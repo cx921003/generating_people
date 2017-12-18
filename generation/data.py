@@ -31,9 +31,9 @@ def get_dataset(EXP_DATA_FP, mode, config):
     input_paths = []
     if mode in ['train', 'trainval']:
         input_paths.extend(glob(path.join(dataset_dir, "train_p*.tfrecords")))
-    if mode in ['trainval', 'val', 'sample']:
+    if mode in ['trainval', 'val']:
         input_paths.extend(glob(path.join(dataset_dir, 'val_p*.tfrecords')))
-    if mode in ['test']:
+    if mode in ['test', 'sample']:
         input_paths.extend(glob(path.join(dataset_dir, 'test_p*.tfrecords')))
     if len(input_paths) == 0:
         # Assume that it's a directory instead of tfrecord structures.

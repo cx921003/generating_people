@@ -60,10 +60,12 @@ def save_images(fetches, image_dir, mode, config, step=None, batch=0):
             name, _ = os.path.splitext(os.path.basename(in_path))
         elif mode == 'sample':
             name = str(config["batch_size"] * batch + im_idx)
+            '''
             if 'paths' in fetches.keys():
                 in_path = fetches["paths"][im_idx]
                 fname, _ = os.path.splitext(os.path.basename(in_path))
                 name += '-' + fname
+            '''
         if step is not None:
             name = str(step) + '_' + name
         row_info["name"] = (name, 'text')

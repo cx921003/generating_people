@@ -203,11 +203,14 @@ def cli(**args):
             if mode in ['val', 'test', 'transform']:
                 num_ex = steps_per_epoch
             else:
-                if exp_config['model_version'] == 'cvae':
-                    num_ex = steps_per_epoch * exp_config["cvae_nsamples_per_image"]
-                else:
-                    num_ex = int(np.ceil(float(args["n_samples"]) /
-                                         exp_config["batch_size"]))
+                # TODO figure out what is happending here
+                #if exp_config['model_version'] == 'cvae':
+                #    num_ex = steps_per_epoch * exp_config["cvae_nsamples_per_image"]
+                #else:
+                #    num_ex = int(np.ceil(float(args["n_samples"]) /
+                #                         exp_config["batch_size"]))
+                num_ex = int(np.ceil(float(args["n_samples"]) /
+                            exp_config["batch_size"]))
             av_results = dict((name, []) for name in test_fetches.keys())
             av_placeholders = dict((name, tf.placeholder(tf.float32))
                                    for name in test_fetches.keys())
