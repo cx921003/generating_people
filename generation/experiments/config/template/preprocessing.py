@@ -123,6 +123,7 @@ def prepare(load_dict, mode, config):
                                     config["crop_size"], 3))
 
     elif config["model_version"] in ['portray_body']:
+        # TODO check how to prepoccess 'input as class'
         if config["input_as_class"]:
             inputs = load_dict['bodysegments']
             inputs.set_shape((config["scale_size"], config["scale_size"], 3))
